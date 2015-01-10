@@ -14,6 +14,8 @@ import org.usfirst.frc.team1318.robot.Compressor.CompressorComponent;
 import org.usfirst.frc.team1318.robot.Compressor.CompressorController;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
+import org.usfirst.frc.team1318.robot.Lifter.LifterComponent;
+import org.usfirst.frc.team1318.robot.Lifter.LifterController;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -52,6 +54,9 @@ public class Robot extends IterativeRobot
     private DriveTrainComponent driveTrainComponent;
     private DriveTrainController driveTrainController;
 
+    private LifterComponent lifterComponent;
+    private LifterController lifterController;
+
     /**
      * Robot-wide initialization code should go here.
      * This default Robot-wide initialization code will be called when 
@@ -62,6 +67,7 @@ public class Robot extends IterativeRobot
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
+        this.lifterComponent = new LifterComponent();
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
     }
@@ -88,6 +94,12 @@ public class Robot extends IterativeRobot
         {
             this.driveTrainController.stop();
             this.driveTrainController = null;
+        }
+
+        if (this.lifterController != null)
+        {
+            this.lifterController.stop();
+            this.lifterController = null;
         }
 
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Disabled");
@@ -144,6 +156,7 @@ public class Robot extends IterativeRobot
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
         this.driveTrainController = new DriveTrainController(this.driver, this.driveTrainComponent, false);
+        this.lifterController = new LifterController(this.driver, this.lifterComponent);
 
         // we will run the compressor controller here because we should start it in advance...
         this.compressorController.update();
@@ -185,6 +198,7 @@ public class Robot extends IterativeRobot
         // run each controller
         this.compressorController.update();
         this.driveTrainController.update();
+        this.lifterController.update();
     }
 }
 

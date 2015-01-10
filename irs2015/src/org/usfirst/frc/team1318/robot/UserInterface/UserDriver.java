@@ -5,7 +5,7 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
 import org.usfirst.frc.team1318.robot.Common.ToggleButtons.SimpleToggleButton;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Joystick;
 
 /**
  * Driver for teleop mode.  User driver translates current toggle state and joystick state into
@@ -21,11 +21,13 @@ public class UserDriver implements IDriver
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.dyv";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.dsm";
     private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.dss";
+    private static final String LIFTER_STATE_LOG_KEY = "u.ls";
 
     private Joystick joystick;
 
     private SimpleToggleButton simpleDriveModeButton;
     private SimpleToggleButton shifterButton;
+    private SimpleToggleButton lifterButton;
 
     /**
      * Initializes a new UserDriver
@@ -37,6 +39,7 @@ public class UserDriver implements IDriver
         // initialize various toggle buttons
         this.simpleDriveModeButton = new SimpleToggleButton();
         this.shifterButton = new SimpleToggleButton();
+        this.lifterButton = new SimpleToggleButton();
     }
 
     /**
@@ -47,6 +50,7 @@ public class UserDriver implements IDriver
         // update the state of the various toggle buttons
         this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
         this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
+        this.lifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.LIFTER_BUTTON));
     }
 
     /**
@@ -106,6 +110,19 @@ public class UserDriver implements IDriver
         SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
 
         return shifterState;
+    }
+
+    /**
+     * Gets a value indicating whether the shifter state should change
+     * @return true for state should change, false for no change 
+     */
+    public boolean getLifterButtonMode()
+    {
+        boolean lifterState = this.lifterButton.isToggled();
+
+        SmartDashboardLogger.putBoolean(UserDriver.LIFTER_STATE_LOG_KEY, lifterState);
+
+        return lifterState;
     }
 
     /**

@@ -23,6 +23,7 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.dlp";
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.drp";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.dpm";
+    private static final String LIFTER_BUTTON_MODE_LOG_KEY = "a.lm";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
@@ -170,6 +171,16 @@ public class AutonomousDriver implements IDriver
         SmartDashboardLogger.putBoolean(AutonomousDriver.DRIVETRAIN_POSITION_MODE_LOG_KEY, positionMode);
 
         return positionMode;
+    }
+
+    @Override
+    public boolean getLifterButtonMode()
+    {
+        boolean mode = this.controlData.getLifterMode();
+
+        SmartDashboardLogger.putBoolean(AutonomousDriver.LIFTER_BUTTON_MODE_LOG_KEY, mode);
+
+        return false;
     }
 
 }

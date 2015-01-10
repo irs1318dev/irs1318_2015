@@ -15,6 +15,7 @@ public class AutonomousControlData
     private boolean driveTrainPositionMode;
     private boolean driveTrainSimpleMode;
     private boolean driveTrainShifterMode;
+    private boolean lifterMode;
 
     /**
      * Initializes a new AutonomousControlData
@@ -28,6 +29,7 @@ public class AutonomousControlData
         this.driveTrainRightPosition = 0.0;
         this.driveTrainPositionMode = false;
         this.driveTrainShifterMode = false;
+        this.lifterMode = false;
     }
 
     public double getDriveTrainXVelocity()
@@ -98,5 +100,15 @@ public class AutonomousControlData
     public void setDriveTrainPositionMode(boolean driveTrainPositionMode)
     {
         this.driveTrainPositionMode = driveTrainPositionMode;
+    }
+
+    public boolean getLifterMode()
+    {
+        return lifterMode;
+    }
+
+    public void setLifterMode(boolean lifterMode)
+    {
+        this.lifterMode = lifterMode;
     }
 }

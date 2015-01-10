@@ -30,4 +30,9 @@ public class ElectronicsConstants
 
     public static final double COMPRESSOR_MAX_PSI = 150.0;
     public static final double COMPRESSOR_MAX_VOLTAGE = 10.0;
+
+    public static final int LIFTER_1_EXTENDER = 1;
+    public static final int LIFTER_1_RETRACTER = 1;
+    public static final int LIFTER_2_EXTENDER = 1;
+    public static final int LIFTER_2_RETRACTER = 1;
 }

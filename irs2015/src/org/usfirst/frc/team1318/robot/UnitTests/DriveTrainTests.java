@@ -1,13 +1,12 @@
 package org.usfirst.frc.team1318.robot.UnitTests;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.usfirst.frc.team1318.robot.TuningConstants;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Unit tests testing the logic of the drivetrain controller.
@@ -72,6 +71,11 @@ public class DriveTrainTests
         }
 
         public boolean getDriveTrainShifterMode()
+        {
+            return false;
+        }
+
+        public boolean getLifterButtonMode()
         {
             return false;
         }
