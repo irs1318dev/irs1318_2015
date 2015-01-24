@@ -3,6 +3,13 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
 /**
  * Defines a toggle that cycles through multiple different states
  * 
+ * 
+ * start    increment
+ *   |         -->
+ *  \|/
+ *   0,  1,  2,  3,  4,  5  (->  cycles back to beginning)
+ * 
+ * 
  * Toggle on press behavior:
  * 
  *     button pressed:        _________________
@@ -21,7 +28,7 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
  * @author Will
  *
  */
-public class MultiToggleButton<T> implements IMultiToggle<T>
+public class MultiToggleButton<T> implements IMultiToggle<T>, IToggle
 {
     private final boolean toggleOnPress;
 

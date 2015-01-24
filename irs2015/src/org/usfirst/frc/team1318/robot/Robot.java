@@ -2,10 +2,13 @@ package org.usfirst.frc.team1318.robot;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.usfirst.frc.team1318.robot.Autonomous.AutonomousDriver;
 import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
-import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveDistanceAutonomousTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveForwardTask;
+import org.usfirst.frc.team1318.robot.Autonomous.Tasks.DriveTimedAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.TurnAutonomousTask;
 import org.usfirst.frc.team1318.robot.Autonomous.Tasks.WaitAutonomousTask;
 import org.usfirst.frc.team1318.robot.Common.IDriver;
@@ -16,9 +19,14 @@ import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainComponent;
 import org.usfirst.frc.team1318.robot.DriveTrain.DriveTrainController;
 import org.usfirst.frc.team1318.robot.Lifter.LifterComponent;
 import org.usfirst.frc.team1318.robot.Lifter.LifterController;
+import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
+import org.usfirst.frc.team1318.robot.DriveTrain.PositionManager;
 import org.usfirst.frc.team1318.robot.UserInterface.UserDriver;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Main class for the FRC 2015 Robot for IRS1318 - [robot_name]
@@ -40,8 +48,15 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  */
 public class Robot extends IterativeRobot
 {
-    // logging constants
+    // smartdash logging constants
     private static final String ROBOT_STATE_LOG_KEY = "r.s";
+
+    // smartdash other constants 
+    private static final String AUTONOMOUS_ROUTINE_PREFERENCE_KEY = "a.routine";
+
+    // smartdash preferences and other inputs
+    private Preferences prefs;
+    private SendableChooser autonomousRoutineChooser;
 
     // Driver (e.g. joystick, autonomous)
     private IDriver driver;
@@ -57,6 +72,9 @@ public class Robot extends IterativeRobot
     private LifterComponent lifterComponent;
     private LifterController lifterController;
 
+    // Position manager - holds position information relative to our starting point
+    private PositionManager position;
+
     /**
      * Robot-wide initialization code should go here.
      * This default Robot-wide initialization code will be called when 
@@ -64,12 +82,26 @@ public class Robot extends IterativeRobot
      */
     public void robotInit()
     {
+        // get preferences
+        this.prefs = Preferences.getInstance();
+        this.ensureDefaultPreferencesInitialized();
+
         // create mechanism components
         this.compressorComponent = new CompressorComponent();
         this.driveTrainComponent = new DriveTrainComponent();
         this.lifterComponent = new LifterComponent();
 
+        // create position manager
+        this.position = new PositionManager(this.driveTrainComponent);
+
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Init");
+
+        // set up chooser on SmartDashboard
+        this.autonomousRoutineChooser = new SendableChooser();
+        this.autonomousRoutineChooser.addDefault("Drive In Square", 0);
+        this.autonomousRoutineChooser.addObject("Drive In Square Positional", 1);
+        this.autonomousRoutineChooser.addObject("Drive Forward", 2);
+        SmartDashboard.putData(Robot.AUTONOMOUS_ROUTINE_PREFERENCE_KEY, this.autonomousRoutineChooser);
     }
 
     /**
@@ -111,26 +143,35 @@ public class Robot extends IterativeRobot
      */
     public void autonomousInit()
     {
-        // create autonomous driver
-        this.driver = new AutonomousDriver(
-            new LinkedList<IAutonomousTask>(
-                Arrays.asList(
-                    // drive in a circle
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent),
-                    new DriveAutonomousTask(600, this.driveTrainComponent),
-                    new WaitAutonomousTask(5),
-                    new TurnAutonomousTask(90, this.driveTrainComponent))));
+        // determine our desired autonomous routine
+        List<IAutonomousTask> autonomousRoutine;
+
+        // select autonomous routine based on setting in SmartDashboard
+        switch ((int)this.autonomousRoutineChooser.getSelected() % 3)
+        {
+            case 0:
+                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                break;
+
+            case 1:
+                autonomousRoutine = Robot.GetDriveInSquareByDistanceRoutine(this.driveTrainComponent);
+                break;
+
+            case 2:
+                autonomousRoutine = Robot.GetDriveForwardRoutine();
+                break;
+
+            default:
+                autonomousRoutine = Robot.GetDriveInSquareRoutine();
+                break;
+        }
+
+        // create autonomous driver based on our desired routine
+        this.driver = new AutonomousDriver(new LinkedList<IAutonomousTask>(autonomousRoutine));
 
         this.generalInit();
 
+        // log that we are in autonomous mode
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Autonomous");
     }
 
@@ -145,6 +186,7 @@ public class Robot extends IterativeRobot
 
         this.generalInit();
 
+        // log that we are in teleop mode
         SmartDashboardLogger.putString(Robot.ROBOT_STATE_LOG_KEY, "Teleop");
     }
 
@@ -155,7 +197,11 @@ public class Robot extends IterativeRobot
     {
         // create controllers for each mechanism
         this.compressorController = new CompressorController(this.compressorComponent);
-        this.driveTrainController = new DriveTrainController(this.driver, this.driveTrainComponent, false);
+        this.driveTrainController =
+            new DriveTrainController(
+                this.driver,
+                this.driveTrainComponent,
+                this.prefs.getBoolean(TuningConstants.DRIVETRAIN_USE_PID_KEY, TuningConstants.DRIVETRAIN_USE_PID_DEFAULT));
         this.lifterController = new LifterController(this.driver, this.lifterComponent);
 
         // we will run the compressor controller here because we should start it in advance...
@@ -193,12 +239,201 @@ public class Robot extends IterativeRobot
      */
     public void generalPeriodic()
     {
+        // update our position
+        this.position.update();
+
         this.driver.update();
 
         // run each controller
         this.compressorController.update();
         this.driveTrainController.update();
         this.lifterController.update();
+    }
+
+    /**
+     * Gets an autonomous routine that represents driving in a square based on positional PID
+     * 
+     * @return list of autonomous tasks
+     */
+    private static List<IAutonomousTask> GetDriveInSquareByDistanceRoutine(IDriveTrainComponent driveTrainComponent)
+    {
+        return Arrays.asList(
+            // drive in a square
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent),
+            new DriveDistanceAutonomousTask(600, driveTrainComponent),
+            new WaitAutonomousTask(5),
+            new TurnAutonomousTask(90, driveTrainComponent));
+    }
+
+    /**
+     * Gets an autonomous routine that represents driving in a square based on drive times
+     * 
+     * @return list of autonomous tasks
+     */
+    private static List<IAutonomousTask> GetDriveInSquareRoutine()
+    {
+        return Arrays.asList(
+            // drive in a square
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0),  // turn right
+            new DriveTimedAutonomousTask(5, 0.0, 0.8),  // drive forward
+            new WaitAutonomousTask(5),
+            new DriveTimedAutonomousTask(2, 0.8, 0.0)); // turn right
+    }
+
+    /**
+     * Gets an autonomous routine that represents driving straight forward forever.
+     * 
+     * @return list of autonomous tasks
+     */
+    private static List<IAutonomousTask> GetDriveForwardRoutine()
+    {
+        return Arrays.asList(new DriveForwardTask());
+    }
+
+    /**
+     * Initialize Preferences into the UI so that they are visible and can be changed before they're first used
+     */
+    private void ensureDefaultPreferencesInitialized()
+    {
+        // Initialize Preferences for PID settings
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_USE_PID_KEY))
+        {
+            prefs.putBoolean(
+                TuningConstants.DRIVETRAIN_USE_PID_KEY,
+                TuningConstants.DRIVETRAIN_USE_PID_DEFAULT);
+        }
+
+        // Right Velocity
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_RIGHT_KF_DEFAULT);
+        }
+
+        // Left Velocity
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_KEY,
+                TuningConstants.DRIVETRAIN_VELOCITY_PID_LEFT_KF_DEFAULT);
+        }
+
+        // Right Position
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_RIGHT_KF_DEFAULT);
+        }
+
+        // Left Position
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KP_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KI_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KD_DEFAULT);
+        }
+
+        if (!prefs.containsKey(TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY))
+        {
+            prefs.putDouble(
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_KEY,
+                TuningConstants.DRIVETRAIN_POSITION_PID_LEFT_KF_DEFAULT);
+        }
     }
 }
 

@@ -17,11 +17,11 @@ import edu.wpi.first.wpilibj.Joystick;
 public class UserDriver implements IDriver
 {
     // logging constants
-    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.dxv";
-    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.dyv";
-    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.dsm";
-    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.dss";
-    private static final String LIFTER_STATE_LOG_KEY = "u.ls";
+    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.driveXVelocity";
+    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.driveYVelocity";
+    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.driveSimpleMode";
+    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.driveShiftState";
+    private static final String LIFTER_STATE_LOG_KEY = "u.lifterstate";
 
     private Joystick joystick;
 
@@ -68,6 +68,11 @@ public class UserDriver implements IDriver
     {
         double xVelocity = this.joystick.getX();
 
+        if (JoystickButtonConstants.INVERT_X_AXIS)
+        {
+            xVelocity = -xVelocity;
+        }
+
         SmartDashboardLogger.putNumber(UserDriver.DRIVETRAIN_X_VELOCITY_LOG_KEY, xVelocity);
 
         return xVelocity;
@@ -80,6 +85,11 @@ public class UserDriver implements IDriver
     public double getDriveTrainYVelocity()
     {
         double yVelocity = this.joystick.getY();
+
+        if (JoystickButtonConstants.INVERT_Y_AXIS)
+        {
+            yVelocity = -yVelocity;
+        }
 
         SmartDashboardLogger.putNumber(UserDriver.DRIVETRAIN_Y_VELOCITY_LOG_KEY, yVelocity);
 

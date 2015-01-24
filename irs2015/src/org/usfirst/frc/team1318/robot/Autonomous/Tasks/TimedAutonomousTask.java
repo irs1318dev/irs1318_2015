@@ -1,4 +1,7 @@
-package org.usfirst.frc.team1318.robot.Autonomous;
+package org.usfirst.frc.team1318.robot.Autonomous.Tasks;
+
+import org.usfirst.frc.team1318.robot.Autonomous.AutonomousControlData;
+import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 
 import edu.wpi.first.wpilibj.Timer;
 
@@ -32,6 +35,7 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
      */
     public void begin()
     {
+        this.timer.start();
         this.startTime = this.timer.get();
     }
 
@@ -60,10 +64,10 @@ public abstract class TimedAutonomousTask implements IAutonomousTask
 
     /**
      * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue, otherwise false
+     * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
     public boolean shouldContinue()
     {
-        return timer.get() > this.startTime + this.duration;
+        return timer.get() < this.startTime + this.duration;
     }
 }

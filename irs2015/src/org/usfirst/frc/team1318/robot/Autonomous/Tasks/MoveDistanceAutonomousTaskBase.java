@@ -6,12 +6,12 @@ import org.usfirst.frc.team1318.robot.Autonomous.IAutonomousTask;
 import org.usfirst.frc.team1318.robot.DriveTrain.IDriveTrainComponent;
 
 /**
- * Abstract class defining a task that moves the robot using the drive train.
+ * Abstract class defining a task that moves the robot a certain distance using the drive train.
  * 
  * @author Will
  *
  */
-public abstract class MoveAutonomousTaskBase implements IAutonomousTask
+public abstract class MoveDistanceAutonomousTaskBase implements IAutonomousTask
 {
     private final IDriveTrainComponent driveTrain;
 
@@ -22,10 +22,10 @@ public abstract class MoveAutonomousTaskBase implements IAutonomousTask
     protected double desiredFinalRightEncoderDistance;
 
     /**
-     * Initializes a new MoveAutonomousTaskBase
+     * Initializes a new MoveDistanceAutonomousTaskBase
      * @param driveTrain component to use to detect our current position
      */
-    protected MoveAutonomousTaskBase(IDriveTrainComponent driveTrain)
+    protected MoveDistanceAutonomousTaskBase(IDriveTrainComponent driveTrain)
     {
         this.driveTrain = driveTrain;
     }
@@ -83,7 +83,7 @@ public abstract class MoveAutonomousTaskBase implements IAutonomousTask
 
     /**
      * Checks whether we should continue processing this task or whether it should end
-     * @return true if we should continue, otherwise false
+     * @return true if we should continue on the current task, otherwise false (to move to the next task)
      */
     public boolean shouldContinue()
     {
@@ -91,11 +91,12 @@ public abstract class MoveAutonomousTaskBase implements IAutonomousTask
         double rightEncoderDistance = this.driveTrain.getRightEncoderDistance();
 
         // check how far away we are from the desired end location
-        double leftDelta = Math.abs(leftEncoderDistance - this.desiredFinalLeftEncoderDistance);
-        double rightDelta = Math.abs(rightEncoderDistance - this.desiredFinalRightEncoderDistance);
+        double leftDelta = Math.abs(this.desiredFinalLeftEncoderDistance - leftEncoderDistance);
+        double rightDelta = Math.abs(this.desiredFinalRightEncoderDistance - rightEncoderDistance);
 
-        // return done if we are within an acceptable distance from the desired end location...
-        return leftDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
-            rightDelta < AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
+        // return that we should continue processing this task if we not are within an acceptable distance
+        // from the desired end location for both left and right. 
+        return leftDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA &&
+            rightDelta >= AutonomousConstants.DRIVETRAIN_POSITIONAL_ACCEPTABLE_DELTA;
     }
 }
