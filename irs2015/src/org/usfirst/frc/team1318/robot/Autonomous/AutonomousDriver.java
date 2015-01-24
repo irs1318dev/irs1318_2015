@@ -23,7 +23,7 @@ public class AutonomousDriver implements IDriver
     private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.driveLeftPosition";
     private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.driveRightPosition";
     private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.drivePositionMode";
-    private static final String LIFTER_BUTTON_MODE_LOG_KEY = "a.lm";
+    private static final String LIFTER_BUTTON_MODE_LOG_KEY = "a.liftermode";
 
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
