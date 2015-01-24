@@ -44,4 +44,10 @@ public interface IDriveTrainComponent
      * @return a value indicating the distance
      */
     public double getRightEncoderDistance();
+
+    public void setArmExtenderState(boolean state);
+
+    public void setArmTiltState(boolean state);
+
+    public void setIntakeSolenoidState(boolean state);
 }

@@ -44,6 +44,12 @@ public interface IDriver
      */
     public boolean getDriveTrainShifterMode();
 
+    public boolean getArmExtendMode();
+
+    public boolean getArmTiltMode();
+
+    public boolean getIntakeSolenoidMode();
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position

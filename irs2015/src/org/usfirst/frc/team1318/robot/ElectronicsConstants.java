@@ -23,6 +23,15 @@ public class ElectronicsConstants
     public static final int DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT = 1;
     public static final int DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT = 0;
 
+    public static final int ARM_EXTEND_MODE_EXTENDER_PORT = -1;
+    public static final int ARM_EXTEND_MODE_RETRACTER_PORT = -1;
+
+    public static final int ARM_TILT_MODE_EXTENDER_PORT = -1;
+    public static final int ARM_TILT_MODE_RETRACTER_PORT = -1;
+
+    public static final int INTAKE_SOLENOID_MODE_EXTENDER_PORT = -1;
+    public static final int INTAKE_SOLENOID_MODE_RETRACTER_PORT = -1;
+
     public static final int COMPRESSOR_PRESSURE_SWITCH_CHANNEL = 6;
     public static final int COMPRESSOR_RELAY_CHANNEL = 1;
 

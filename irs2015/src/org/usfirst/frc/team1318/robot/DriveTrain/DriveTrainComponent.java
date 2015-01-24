@@ -26,6 +26,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
     public static final String LEFT_ENCODER_DISTANCE_LOG_KEY = "dt.leftEncoderDistance";
     public static final String RIGHT_ENCODER_DISTANCE_LOG_KEY = "dt.rightEncoderDistance";
     public static final String SHIFTER_STATE_LOG_KEY = "dt.shifterState";
+    public static final String ARM_EXTENDER_LOG_KEY = "ar.extender";
+    public static final String ARM_TILT_LOG_KEY = "ar.tilt";
+    public static final String INTAKE_SOLENOID_KEY = "in.solenoid";
 
     private Talon leftTalon;
     private Talon rightTalon;
@@ -34,6 +37,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private Encoder rightEncoder;
 
     private DoubleSolenoid shifter;
+    private DoubleSolenoid armExtender;
+    private DoubleSolenoid armTilt;
+    private DoubleSolenoid intakeSolenoid;
 
     /**
      * Initializes a new DriveTrainComponent
@@ -60,6 +66,18 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.shifter = new DoubleSolenoid(
             ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_EXTENDER_PORT,
             ElectronicsConstants.DRIVETRAIN_SHIFTER_MODE_RETRACTER_PORT);
+
+        this.armExtender = new DoubleSolenoid(
+            ElectronicsConstants.ARM_EXTEND_MODE_EXTENDER_PORT,
+            ElectronicsConstants.ARM_EXTEND_MODE_RETRACTER_PORT);
+
+        this.armTilt = new DoubleSolenoid(
+            ElectronicsConstants.ARM_TILT_MODE_EXTENDER_PORT,
+            ElectronicsConstants.ARM_TILT_MODE_RETRACTER_PORT);
+
+        this.intakeSolenoid = new DoubleSolenoid(
+            ElectronicsConstants.INTAKE_SOLENOID_MODE_EXTENDER_PORT,
+            ElectronicsConstants.INTAKE_SOLENOID_MODE_RETRACTER_PORT);
     }
 
     /**
@@ -92,6 +110,48 @@ public class DriveTrainComponent implements IDriveTrainComponent
         }
 
         SmartDashboardLogger.putBoolean(DriveTrainComponent.SHIFTER_STATE_LOG_KEY, state);
+    }
+
+    public void setArmExtenderState(boolean state)
+    {
+        if (state)
+        {
+            this.armExtender.set(Value.kForward);
+        }
+        else
+        {
+            this.armExtender.set(Value.kReverse);
+        }
+
+        SmartDashboardLogger.putBoolean(DriveTrainComponent.ARM_EXTENDER_LOG_KEY, state);
+    }
+
+    public void setArmTiltState(boolean state)
+    {
+        if (state)
+        {
+            this.armTilt.set(Value.kForward);
+        }
+        else
+        {
+            this.armTilt.set(Value.kReverse);
+        }
+
+        SmartDashboardLogger.putBoolean(DriveTrainComponent.ARM_TILT_LOG_KEY, state);
+    }
+
+    public void setIntakeSolenoidState(boolean state)
+    {
+        if (state)
+        {
+            this.intakeSolenoid.set(Value.kForward);
+        }
+        else
+        {
+            this.intakeSolenoid.set(Value.kReverse);
+        }
+
+        SmartDashboardLogger.putBoolean(DriveTrainComponent.INTAKE_SOLENOID_KEY, state);
     }
 
     /**

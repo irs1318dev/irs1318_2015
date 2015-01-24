@@ -147,4 +147,22 @@ public class UserDriver implements IDriver
         // position mode is only used for autonomous
         return false;
     }
+
+    @Override
+    public boolean getArmExtendMode()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.ARM_EXTEND_MODE);
+    }
+
+    @Override
+    public boolean getArmTiltMode()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.ARM_TILT_MODE);
+    }
+
+    @Override
+    public boolean getIntakeSolenoidMode()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.INTAKE_SOLENOID_MODE);
+    }
 }

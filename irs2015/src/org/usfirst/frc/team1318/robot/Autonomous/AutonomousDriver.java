@@ -176,4 +176,25 @@ public class AutonomousDriver implements IDriver
         return positionMode;
     }
 
+    @Override
+    public boolean getArmExtendMode()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getArmTiltMode()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeSolenoidMode()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

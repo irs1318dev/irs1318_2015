@@ -10,7 +10,7 @@ public class JoystickButtonConstants
 {
     public static final int JOYSTICK_PORT = 0;
 
-    public static final int DRIVETRAIN_SIMPLE_BUTTON = 3;
+    public static final int DRIVETRAIN_SIMPLE_BUTTON = 10;
 
     public static final int DRIVETRAIN_SHIFTER_BUTTON = 4;
 
@@ -19,4 +19,10 @@ public class JoystickButtonConstants
 
     // change INVERT_Y_AXIS to true if positive on the joystick isn't forward, and negative isn't backwards.
     public static final boolean INVERT_Y_AXIS = true;
+
+    public static final int ARM_EXTEND_MODE = 5;
+
+    public static final int ARM_TILT_MODE = 3;
+
+    public static final int INTAKE_SOLENOID_MODE = 6;
 }

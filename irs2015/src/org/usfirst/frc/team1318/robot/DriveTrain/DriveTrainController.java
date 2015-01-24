@@ -51,6 +51,9 @@ public class DriveTrainController implements IController
     {
         // apply desired shifter state
         this.component.setShifterState(this.driver.getDriveTrainShifterMode());
+        this.component.setArmExtenderState(this.driver.getArmExtendMode());
+        this.component.setArmTiltState(this.driver.getArmTiltMode());
+        this.component.setIntakeSolenoidState(this.driver.getIntakeSolenoidMode());
 
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
