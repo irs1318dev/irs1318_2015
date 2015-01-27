@@ -55,6 +55,15 @@ public class DriveTrainController implements IController
         this.component.setArmTiltState(this.driver.getArmTiltMode());
         this.component.setIntakeSolenoidState(this.driver.getIntakeSolenoidMode());
 
+        if (this.driver.getIntakeIn())
+        {
+            this.component.setIntakeIn();
+        }
+        else if (this.driver.getIntakeOut())
+        {
+            this.component.setIntakeOut();
+        }
+
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
         if (newUsePositionalMode != this.usePositionalMode)

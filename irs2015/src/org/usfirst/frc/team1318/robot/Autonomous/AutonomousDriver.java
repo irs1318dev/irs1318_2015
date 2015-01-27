@@ -197,4 +197,18 @@ public class AutonomousDriver implements IDriver
         return false;
     }
 
+    @Override
+    public boolean getIntakeIn()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeOut()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

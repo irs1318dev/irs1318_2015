@@ -41,6 +41,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
     private DoubleSolenoid armTilt;
     private DoubleSolenoid intakeSolenoid;
 
+    private Talon intakeRight;
+    private Talon intakeLeft;
+
     /**
      * Initializes a new DriveTrainComponent
      */
@@ -78,6 +81,9 @@ public class DriveTrainComponent implements IDriveTrainComponent
         this.intakeSolenoid = new DoubleSolenoid(
             ElectronicsConstants.INTAKE_SOLENOID_MODE_EXTENDER_PORT,
             ElectronicsConstants.INTAKE_SOLENOID_MODE_RETRACTER_PORT);
+
+        intakeRight = new Talon(3);
+        intakeLeft = new Talon(4);
     }
 
     /**
@@ -92,6 +98,18 @@ public class DriveTrainComponent implements IDriveTrainComponent
 
         SmartDashboardLogger.putNumber(DriveTrainComponent.LEFT_TALON_POWER_LOG_KEY, leftPower);
         SmartDashboardLogger.putNumber(DriveTrainComponent.RIGHT_TALON_POWER_LOG_KEY, rightPower);
+    }
+
+    public void setIntakeIn()
+    {
+        intakeLeft.set(-0.8);
+        intakeRight.set(0.8);
+    }
+
+    public void setIntakeOut()
+    {
+        intakeLeft.set(0.8);
+        intakeRight.set(-0.8);
     }
 
     /**

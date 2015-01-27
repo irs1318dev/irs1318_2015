@@ -165,4 +165,14 @@ public class UserDriver implements IDriver
     {
         return joystick.getRawButton(JoystickButtonConstants.INTAKE_SOLENOID_MODE);
     }
+
+    public boolean getIntakeIn()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.INTAKE_IN);
+    }
+
+    public boolean getIntakeOut()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.INTAKE_OUT);
+    }
 }

@@ -50,6 +50,10 @@ public interface IDriver
 
     public boolean getIntakeSolenoidMode();
 
+    public boolean getIntakeIn();
+
+    public boolean getIntakeOut();
+
     /**
      * Get a value indicating the desired drive train left position for positional mode
      * @return position
