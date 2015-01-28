@@ -50,4 +50,8 @@ public interface IDriveTrainComponent
     public void setArmTiltState(boolean state);
 
     public void setIntakeSolenoidState(boolean state);
+
+    public void setIntakeIn();
+
+    public void setIntakeOut();
 }

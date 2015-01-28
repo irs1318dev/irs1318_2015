@@ -174,4 +174,14 @@ public class UserDriver implements IDriver
     {
         return intakeToggleButton.isToggled();
     }
+
+    public boolean getIntakeIn()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.INTAKE_IN);
+    }
+
+    public boolean getIntakeOut()
+    {
+        return joystick.getRawButton(JoystickButtonConstants.INTAKE_OUT);
+    }
 }
