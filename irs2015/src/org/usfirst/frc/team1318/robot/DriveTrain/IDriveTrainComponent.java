@@ -19,7 +19,7 @@ public interface IDriveTrainComponent
      * sets the state of the shifters 
      * @param state what the shifter state should be
      */
-    public void setShifterState(boolean state);
+    public void setTromboneState(boolean state);
 
     /**
      * get the velocity from the left encoder
