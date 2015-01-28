@@ -20,12 +20,15 @@ public class UserDriver implements IDriver
     private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "u.driveXVelocity";
     private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "u.driveYVelocity";
     private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "u.driveSimpleMode";
-    private static final String DRIVETRAIN_SHIFTER_STATE_LOG_KEY = "u.driveShiftState";
+    private static final String ARM_TROMBONE_STATE_LOG_KEY = "u.tromboneState";
 
     private Joystick joystick;
 
     private SimpleToggleButton simpleDriveModeButton;
-    private SimpleToggleButton shifterButton;
+    private SimpleToggleButton tromboneButton;
+    private SimpleToggleButton armExtendButton;
+    private SimpleToggleButton armTiltButton;
+    private SimpleToggleButton intakeToggleButton;
 
     /**
      * Initializes a new UserDriver
@@ -36,7 +39,10 @@ public class UserDriver implements IDriver
 
         // initialize various toggle buttons
         this.simpleDriveModeButton = new SimpleToggleButton();
-        this.shifterButton = new SimpleToggleButton();
+        this.tromboneButton = new SimpleToggleButton();
+        this.armExtendButton = new SimpleToggleButton();
+        this.armTiltButton = new SimpleToggleButton();
+        this.intakeToggleButton = new SimpleToggleButton();
     }
 
     /**
@@ -46,7 +52,10 @@ public class UserDriver implements IDriver
     {
         // update the state of the various toggle buttons
         this.simpleDriveModeButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SIMPLE_BUTTON));
-        this.shifterButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
+        this.tromboneButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.DRIVETRAIN_SHIFTER_BUTTON));
+        this.armExtendButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_EXTEND_MODE));
+        this.armTiltButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.ARM_TILT_MODE));
+        this.intakeToggleButton.updateState(this.joystick.getRawButton(JoystickButtonConstants.INTAKE_SOLENOID_MODE));
     }
 
     /**
@@ -109,11 +118,11 @@ public class UserDriver implements IDriver
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 
      */
-    public boolean getDriveTrainShifterMode()
+    public boolean getDriveTrainTromboneMode()
     {
-        boolean shifterState = this.shifterButton.isToggled();
+        boolean shifterState = this.tromboneButton.isToggled();
 
-        SmartDashboardLogger.putBoolean(UserDriver.DRIVETRAIN_SHIFTER_STATE_LOG_KEY, shifterState);
+        SmartDashboardLogger.putBoolean(UserDriver.ARM_TROMBONE_STATE_LOG_KEY, shifterState);
 
         return shifterState;
     }
@@ -151,18 +160,18 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmExtendMode()
     {
-        return joystick.getRawButton(JoystickButtonConstants.ARM_EXTEND_MODE);
+        return armExtendButton.isToggled();
     }
 
     @Override
     public boolean getArmTiltMode()
     {
-        return joystick.getRawButton(JoystickButtonConstants.ARM_TILT_MODE);
+        return armTiltButton.isToggled();
     }
 
     @Override
     public boolean getIntakeSolenoidMode()
     {
-        return joystick.getRawButton(JoystickButtonConstants.INTAKE_SOLENOID_MODE);
+        return intakeToggleButton.isToggled();
     }
 }

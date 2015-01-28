@@ -50,7 +50,7 @@ public class DriveTrainController implements IController
     public void update()
     {
         // apply desired shifter state
-        this.component.setShifterState(this.driver.getDriveTrainShifterMode());
+        this.component.setShifterState(this.driver.getDriveTrainTromboneMode());
         this.component.setArmExtenderState(this.driver.getArmExtendMode());
         this.component.setArmTiltState(this.driver.getArmTiltMode());
         this.component.setIntakeSolenoidState(this.driver.getIntakeSolenoidMode());

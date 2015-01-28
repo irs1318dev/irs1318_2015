@@ -42,7 +42,7 @@ public interface IDriver
      * Gets a value indicating whether the shifter state should change 
      * @return true for state should change, false for no change 
      */
-    public boolean getDriveTrainShifterMode();
+    public boolean getDriveTrainTromboneMode();
 
     public boolean getArmExtendMode();
 
