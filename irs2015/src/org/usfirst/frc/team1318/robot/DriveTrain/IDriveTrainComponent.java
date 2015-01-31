@@ -16,12 +16,6 @@ public interface IDriveTrainComponent
     public void setDriveTrainPower(double leftPower, double rightPower);
 
     /**
-     * sets the state of the shifters 
-     * @param state what the shifter state should be
-     */
-    public void setTromboneState(boolean state);
-
-    /**
      * get the velocity from the left encoder
      * @return a value indicating the velocity
      */
@@ -44,14 +38,4 @@ public interface IDriveTrainComponent
      * @return a value indicating the distance
      */
     public double getRightEncoderDistance();
-
-    public void setArmExtenderState(boolean state);
-
-    public void setArmTiltState(boolean state);
-
-    public void setIntakeSolenoidState(boolean state);
-
-    public void setIntakeIn();
-
-    public void setIntakeOut();
 }

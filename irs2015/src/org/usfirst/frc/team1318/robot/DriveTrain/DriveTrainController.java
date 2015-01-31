@@ -20,10 +20,10 @@ public class DriveTrainController implements IController
     private static final double POWERLEVEL_MIN = -1.0;
     private static final double POWERLEVEL_MAX = 1.0;
 
-    private IDriver driver;
-    private IDriveTrainComponent component;
+    private final IDriver driver;
+    private final IDriveTrainComponent component;
 
-    private boolean usePID;
+    private final boolean usePID;
     private boolean usePositionalMode;
     private PIDHandler leftPID;
     private PIDHandler rightPID;
@@ -49,21 +49,6 @@ public class DriveTrainController implements IController
      */
     public void update()
     {
-        // apply desired shifter state
-        this.component.setTromboneState(this.driver.getDriveTrainTromboneMode());
-        this.component.setArmExtenderState(this.driver.getArmExtendMode());
-        this.component.setArmTiltState(this.driver.getArmTiltMode());
-        this.component.setIntakeSolenoidState(this.driver.getIntakeSolenoidMode());
-
-        if (this.driver.getIntakeIn())
-        {
-            this.component.setIntakeIn();
-        }
-        else if (this.driver.getIntakeOut())
-        {
-            this.component.setIntakeOut();
-        }
-
         // check our desired PID mode
         boolean newUsePositionalMode = this.driver.getDriveTrainPositionMode();
         if (newUsePositionalMode != this.usePositionalMode)
@@ -110,7 +95,7 @@ public class DriveTrainController implements IController
      */
     private void createPIDHandler()
     {
-        if (!usePID)
+        if (!this.usePID)
         {
             this.leftPID = null;
             this.rightPID = null;
@@ -482,8 +467,8 @@ public class DriveTrainController implements IController
      */
     private class PowerSetting
     {
-        private double leftPower;
-        private double rightPower;
+        private final double leftPower;
+        private final double rightPower;
 
         /**
          * Initializes a new PowerSetting
