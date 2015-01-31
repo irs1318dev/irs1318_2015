@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * Defines a simple toggle that switches between true and false.
  * 
@@ -24,6 +26,8 @@ package org.usfirst.frc.team1318.robot.Common.ToggleButtons;
 public class SimpleToggleButton implements ISimpleToggle
 {
     private final boolean toggleOnPress;
+    private Joystick joystick;
+    private int button;
 
     private boolean currentState;
     private boolean prevButtonState;
@@ -31,21 +35,32 @@ public class SimpleToggleButton implements ISimpleToggle
     /**
      * Initializes a new SimpleToggleButton
      */
-    public SimpleToggleButton()
+    public SimpleToggleButton(Joystick joystick, int button)
     {
-        this(true);
+        this(joystick, button, true);
     }
 
     /**
      * Initializes a new SimpleToggleButton
      * @param toggleOnPress indicates whether we should toggle when the button is first pressed or when released
      */
-    public SimpleToggleButton(boolean toggleOnPress)
+    public SimpleToggleButton(Joystick joystick, int button, boolean toggleOnPress)
     {
         this.currentState = false;
         this.prevButtonState = false;
 
+        this.joystick = joystick;
+        this.button = button;
+
         this.toggleOnPress = toggleOnPress;
+    }
+
+    /**
+     * Attempt to change the current state using the information provided in the constructor)
+     */
+    public void update()
+    {
+        this.updateState(this.joystick.getRawButton(this.button));
     }
 
     /**

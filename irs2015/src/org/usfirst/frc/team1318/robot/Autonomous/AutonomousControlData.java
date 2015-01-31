@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1318.robot.Autonomous;
 
+import java.util.Map;
+
 /**
  * Class simply holding data about the current control settings for autonomous mode.  
  * 
@@ -8,31 +10,8 @@ package org.usfirst.frc.team1318.robot.Autonomous;
  */
 public class AutonomousControlData
 {
-    //Drive Train 
-    private double driveTrainXVelocity;
-    private double driveTrainYVelocity;
-    private double driveTrainLeftPosition;
-    private double driveTrainRightPosition;
-    private boolean driveTrainPositionMode;
-    private boolean driveTrainSimpleMode;
-
-    //Elevator 
-    private boolean elevatorMacroState;
-    private boolean elevatorHeight0State;
-    private boolean elevatorHeight1State;
-    private boolean elevatorHeight2State;
-    private boolean elevatorHeight3State;
-    private boolean elevatorHeight4State;
-    private boolean elevatorHeight5State;
-    private boolean elevatorHeight6State;
-    private boolean elevatorHeight7State;
-    private double elevatorOverrideState;
-
-    //Arm
-    private boolean armMacroState;
-    private boolean armExtenderOverrideState;
-    private boolean armTiltOverrideState;
-    private boolean armTromboneOverrideState;
+    //Drive Train
+    private Map<String, Double> doubles;
 
     /**
      * Initializes a new AutonomousControlData

@@ -15,33 +15,6 @@ import org.usfirst.frc.team1318.robot.Common.SmartDashboardLogger;
  */
 public class AutonomousDriver implements IDriver
 {
-    // logging constants
-    //Drive Train 
-    private static final String DRIVETRAIN_X_VELOCITY_LOG_KEY = "a.driveXVelocity";
-    private static final String DRIVETRAIN_Y_VELOCITY_LOG_KEY = "a.driveYVelocity";
-    private static final String DRIVETRAIN_SIMPLE_MODE_LOG_KEY = "a.driveSimpleMode";
-    private static final String DRIVETRAIN_LEFT_POSITION_LOG_KEY = "a.driveLeftPosition";
-    private static final String DRIVETRAIN_RIGHT_POSITION_LOG_KEY = "a.driveRightPosition";
-    private static final String DRIVETRAIN_POSITION_MODE_LOG_KEY = "a.drivePositionMode";
-
-    //Elevator 
-    private static final String ELEVATOR_MACRO_STATE_LOG_KEY = "a.elevatorMacroState";
-    private static final String ELEVATOR_HEIGHT_0_STATE_LOG_KEY = "a.elevatorHeight0";
-    private static final String ELEVATOR_HEIGHT_1_STATE_LOG_KEY = "a.elevatorHeight1";
-    private static final String ELEVATOR_HEIGHT_2_STATE_LOG_KEY = "a.elevatorHeight2";
-    private static final String ELEVATOR_HEIGHT_3_STATE_LOG_KEY = "a.elevatorHeight3";
-    private static final String ELEVATOR_HEIGHT_4_STATE_LOG_KEY = "a.elevatorHeight4";
-    private static final String ELEVATOR_HEIGHT_5_STATE_LOG_KEY = "a.elevatorHeight5";
-    private static final String ELEVATOR_HEIGHT_6_STATE_LOG_KEY = "a.elevatorHeight6";
-    private static final String ELEVATOR_HEIGHT_7_STATE_LOG_KEY = "a.elevatorHeight7";
-    private static final String ELEVATOR_OVERRIDE_STATE_LOG_KEY = "a.elevatorOverride";
-
-    //Arm 
-    private static final String ARM_MACRO_STATE_LOG_KEY = "a.armMacroState";
-    private static final String ARM_EXTENDER_STATE_LOG_KEY = "a.armExtenderOverride";
-    private static final String ARM_TILT_STATE_LOG_KEY = "a.armTiltOverride";
-    private static final String ARM_TROMBONE_STATE_LOG_KEY = "a.armTromboneOverride";
-
     private Queue<IAutonomousTask> autonomousTasks;
     private IAutonomousTask currentTask;
     private AutonomousControlData controlData;
@@ -100,6 +73,11 @@ public class AutonomousDriver implements IDriver
             this.currentTask.cancel(this.controlData);
             this.currentTask = null;
         }
+    }
+
+    public String getLogKey(String key)
+    {
+        return "a." + key;
     }
 
     //================================================== DriveTrain ==============================================================
