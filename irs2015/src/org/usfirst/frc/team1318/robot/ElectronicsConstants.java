@@ -36,4 +36,12 @@ public class ElectronicsConstants
 
     public static final double COMPRESSOR_MAX_PSI = 150.0;
     public static final double COMPRESSOR_MAX_VOLTAGE = 10.0;
+
+    // For random testing only!
+    public static final int TEST_TALON_CHANNEL = -1;
+    public static final int TEST_SOLENOID_EXTEND_CHANNEL = -1;
+    public static final int TEST_SOLENOID_RETRACT_CHANNEL = -1;
+    public static final int TEST_ENCODER_CHANNEL_A = -1;
+    public static final int TEST_ENCODER_CHANNEL_B = -1;
+    public static final int TEST_DIGITAL_INPUT_CHANNEL = -1;
 }
