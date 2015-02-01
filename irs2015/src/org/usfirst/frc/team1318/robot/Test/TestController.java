@@ -24,13 +24,14 @@ public class TestController implements IController
     public void update()
     {
         double currentTime = this.timer.get();
+        boolean go = this.driver.getDriveTrainSimpleMode();
         if (currentTime % 10 > 5)
         {
-            this.component.setComponent(true, 0.2);
+            this.component.setComponent(go, 0.2);
         }
         else
         {
-            this.component.setComponent(false, -0.2);
+            this.component.setComponent(go, -0.2);
         }
 
         this.component.getAnalogSensor();

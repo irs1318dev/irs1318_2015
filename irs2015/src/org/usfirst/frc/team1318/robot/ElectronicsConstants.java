@@ -8,9 +8,6 @@ package org.usfirst.frc.team1318.robot;
  */
 public class ElectronicsConstants
 {
-    public static final int SOLENOID_MODULE_PORT_1 = 3;
-    public static final int SOLENOID_MODULE_PORT_2 = 2;
-
     public static final int DRIVETRAIN_LEFT_TALON_CHANNEL = 9;
     public static final int DRIVETRAIN_RIGHT_TALON_CHANNEL = 8;
 
@@ -39,8 +36,8 @@ public class ElectronicsConstants
 
     // For random testing only!
     public static final int TEST_TALON_CHANNEL = -1;
-    public static final int TEST_SOLENOID_EXTEND_CHANNEL = -1;
-    public static final int TEST_SOLENOID_RETRACT_CHANNEL = -1;
+    public static final int TEST_SOLENOID_EXTEND_CHANNEL = 3;
+    public static final int TEST_SOLENOID_RETRACT_CHANNEL = 2;
     public static final int TEST_ENCODER_CHANNEL_A = -1;
     public static final int TEST_ENCODER_CHANNEL_B = -1;
     public static final int TEST_DIGITAL_INPUT_CHANNEL = -1;
