@@ -53,6 +53,10 @@ public class UserDriver implements IDriver
     private static final String INTAKE_FORWARD_STATE_KEY = "u.intakeForwardStateKey";
     private static final String INTAKE_BACKWARD_STATE_KEY = "u.intakeBackwardStateKey";
 
+    //Test
+    private static final String POV_BASE_LOG_KEY = "u.pov";
+    private static final String THROTTLE_LOG_KEY = "u.throttle";
+
     // Joystick
     private final Joystick joystick;
 
@@ -165,6 +169,8 @@ public class UserDriver implements IDriver
         this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
         this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
 
+        readPOV();
+
     }
 
     /**
@@ -172,6 +178,26 @@ public class UserDriver implements IDriver
      */
     public void stop()
     {
+    }
+
+    //===================================================== Test =================================================================
+
+    public void readPOV()
+    {
+        int count = joystick.getPOVCount();
+        for (int i = 0; i < count; i++)
+        {
+            int value = this.joystick.getPOV(i);
+            SmartDashboardLogger.putNumber(UserDriver.POV_BASE_LOG_KEY + i, value);
+
+        }
+    }
+
+    public void readThrottle()
+    {
+        double value = joystick.getThrottle();
+        SmartDashboardLogger.putNumber(UserDriver.THROTTLE_LOG_KEY, value);
+
     }
 
     //================================================== DriveTrain ==============================================================
