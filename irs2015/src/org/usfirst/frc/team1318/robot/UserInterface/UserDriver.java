@@ -170,6 +170,7 @@ public class UserDriver implements IDriver
         this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
 
         readPOV();
+        readThrottle();
 
     }
 
