@@ -56,8 +56,8 @@ public class UserDriver implements IDriver
     //Test
     private static final String POV_BASE_LOG_KEY = "u.pov";
     private static final String THROTTLE_LOG_KEY = "u.throttle";
-    private static final String JOYSTICK_1_BASE_LOG_KEY = "u.joystick1";
-    private static final String JOYSTICK_2_BASE_LOG_KEY = "u.joystick2";
+    private static final String JOYSTICK_1_BASE_LOG_KEY = "u.joystick1_";
+    private static final String JOYSTICK_2_BASE_LOG_KEY = "u.joystick2_";
 
     // Joystick
     private final Joystick joystick;
@@ -175,6 +175,7 @@ public class UserDriver implements IDriver
 
         //readPOV();
         //readThrottle();
+        readAllButtonsAndAxis();
 
     }
 
@@ -203,13 +204,45 @@ public class UserDriver implements IDriver
         SmartDashboardLogger.putNumber(UserDriver.THROTTLE_LOG_KEY, value);
     }
 
-    public void allButtonsAndAxis()
+    public void readAllButtonsAndAxis()
     {
-        //joystick1 
+        //joystick 1 
         for (int i = 0; i < joystick.getButtonCount(); i++)
         {
-
+            boolean value = joystick.getRawButton(i);
+            SmartDashboardLogger.putBoolean(JOYSTICK_1_BASE_LOG_KEY + "button" + i, value);
         }
+        for (int i = 0; i < joystick.getAxisCount(); i++)
+        {
+            double value = joystick.getRawAxis(i);
+            SmartDashboardLogger.putNumber(JOYSTICK_1_BASE_LOG_KEY + "axis" + i, value);
+        }
+        for (int i = 0; i < joystick.getPOVCount(); i++)
+        {
+            double value = joystick.getPOV(i);
+            SmartDashboardLogger.putNumber(JOYSTICK_1_BASE_LOG_KEY + "pov" + i, value);
+        }
+        SmartDashboardLogger.putNumber(JOYSTICK_1_BASE_LOG_KEY + "throttle", joystick.getThrottle());
+        SmartDashboardLogger.putNumber(JOYSTICK_1_BASE_LOG_KEY + "twist", joystick.getTwist());
+        SmartDashboardLogger.putBoolean(JOYSTICK_1_BASE_LOG_KEY + "top", joystick.getTop());
+        SmartDashboardLogger.putBoolean(JOYSTICK_1_BASE_LOG_KEY + "bumper", joystick.getBumper());
+
+        //joystick 2
+        for (int i = 0; i < joystick2.getButtonCount(); i++)
+        {
+            boolean value = joystick2.getRawButton(i);
+            SmartDashboardLogger.putBoolean(JOYSTICK_2_BASE_LOG_KEY + "button" + i, value);
+        }
+        for (int i = 0; i < joystick2.getAxisCount(); i++)
+        {
+            double value = joystick2.getRawAxis(i);
+            SmartDashboardLogger.putNumber(JOYSTICK_2_BASE_LOG_KEY + "axis" + i, value);
+        }
+        SmartDashboardLogger.putNumber(JOYSTICK_2_BASE_LOG_KEY + "throttle", joystick2.getThrottle());
+        SmartDashboardLogger.putNumber(JOYSTICK_2_BASE_LOG_KEY + "twist", joystick2.getTwist());
+        SmartDashboardLogger.putBoolean(JOYSTICK_2_BASE_LOG_KEY + "top", joystick2.getTop());
+        SmartDashboardLogger.putBoolean(JOYSTICK_2_BASE_LOG_KEY + "bumper", joystick2.getBumper());
+
     }
 
     //================================================== DriveTrain ==============================================================
