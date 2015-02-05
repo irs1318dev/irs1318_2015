@@ -56,9 +56,12 @@ public class UserDriver implements IDriver
     //Test
     private static final String POV_BASE_LOG_KEY = "u.pov";
     private static final String THROTTLE_LOG_KEY = "u.throttle";
+    private static final String JOYSTICK_1_BASE_LOG_KEY = "u.joystick1";
+    private static final String JOYSTICK_2_BASE_LOG_KEY = "u.joystick2";
 
     // Joystick
     private final Joystick joystick;
+    private final Joystick joystick2;
 
     // DriveTrain toggles
     private final SimpleToggleButton simpleDriveModeButton;
@@ -96,6 +99,7 @@ public class UserDriver implements IDriver
     public UserDriver()
     {
         this.joystick = new Joystick(JoystickButtonConstants.JOYSTICK_PORT);
+        this.joystick2 = new Joystick(1);
 
         // initialize DriveTrain toggles
         this.simpleDriveModeButton = new SimpleToggleButton();
@@ -169,8 +173,8 @@ public class UserDriver implements IDriver
         this.elevatorUp.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_UP_BUTTON));
         this.elevatorDown.updateState(this.joystick.getRawButton(JoystickButtonConstants.ELEVATOR_DOWN_BUTTON));
 
-        readPOV();
-        readThrottle();
+        //readPOV();
+        //readThrottle();
 
     }
 
@@ -190,7 +194,6 @@ public class UserDriver implements IDriver
         {
             int value = this.joystick.getPOV(i);
             SmartDashboardLogger.putNumber(UserDriver.POV_BASE_LOG_KEY + i, value);
-
         }
     }
 
@@ -198,7 +201,15 @@ public class UserDriver implements IDriver
     {
         double value = joystick.getThrottle();
         SmartDashboardLogger.putNumber(UserDriver.THROTTLE_LOG_KEY, value);
+    }
 
+    public void allButtonsAndAxis()
+    {
+        //joystick1 
+        for (int i = 0; i < joystick.getButtonCount(); i++)
+        {
+
+        }
     }
 
     //================================================== DriveTrain ==============================================================
