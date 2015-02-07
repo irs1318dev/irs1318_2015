@@ -35,6 +35,7 @@ public class SensorTest implements IController
     private final DigitalInput pressureInputPSI;
 
     // keys declarations   
+    // TODO get actual keys
     private static final String THROUGH_BEAM_SENSOR_KEY = "";
     private static final String ULTRASONIC_SENSOR_0_KEY = "";
     private static final String ULTRASONIC_SENSOR_1_KEY = "";
@@ -49,7 +50,7 @@ public class SensorTest implements IController
 
     public SensorTest()
     {
-        //to be replaced by sensor.getDigitalInput
+        // TODO replace with sensor.getDigitalInput or equivalent operation
         throughBeamInput = null;
         ultrasonicInput0 = null;
         ultrasonicInput1 = null;
@@ -63,76 +64,77 @@ public class SensorTest implements IController
         pressureInputPSI = null;
     }
 
-    //Checks the status of the through beam sensor
+    // Checks the status of the through beam sensor and puts it in the SmartDashboard
     public void checkThroughBeamSensor()
     {
-        //        ITable = throughBeamInput.getTable();
         boolean value = throughBeamInput.get();
         SmartDashboardLogger.putBoolean(THROUGH_BEAM_SENSOR_KEY, value);
     }
 
-    //    //Checks the status of the ultrasonic sensor
-
+    // Checks the status of ultrasonic sensor 0 and puts it in the SmartDashboard
     public void checkUltrasonicSensor0()
     {
         boolean value = ultrasonicInput0.get();
         SmartDashboardLogger.putBoolean(ULTRASONIC_SENSOR_0_KEY, value);
     }
 
+    // Checks the status of ultrasonic sensor 1 and puts it in the SmartDashboard
     public void checkUltrasonicSensor1()
     {
         boolean value = ultrasonicInput1.get();
         SmartDashboardLogger.putBoolean(ULTRASONIC_SENSOR_1_KEY, value);
     }
 
-    //    //Checks the status of the dipswitches
+    // Checks the status of dipswitch 0 and puts it in the SmartDashboard
     public void checkDipSwitch0()
     {
         boolean value = dipSwitchInput0.get();
         SmartDashboardLogger.putBoolean(DIP_SWITCH_0_KEY, value);
     }
 
-    //
+    // Checks the status of dipswitch 1 and puts it in the SmartDashboard
     public void checkDipSwitch1()
     {
         boolean value = dipSwitchInput1.get();
         SmartDashboardLogger.putBoolean(DIP_SWITCH_1_KEY, value);
     }
 
-    //
+    // Checks the status of dipswitch 2 and puts it in the SmartDashboard
     public void checkDipSwitch2()
     {
         boolean value = dipSwitchInput2.get();
         SmartDashboardLogger.putBoolean(DIP_SWITCH_2_KEY, value);
     }
 
-    //    //Checks the status of the encoders
+    // Checks the status of encoder 0 and puts it in the SmartDashboard
     public void checkEncoder0()
     {
         boolean value = encoderInput0.get();
         SmartDashboardLogger.putBoolean(ENCODER_0_KEY, value);
     }
 
+    // Checks the status of encoder 1 and puts it in the SmartDashboard
     public void checkEncoder1()
     {
         boolean value = encoderInput1.get();
         SmartDashboardLogger.putBoolean(ENCODER_1_KEY, value);
     }
 
+    // Checks the status of encoder 2 and puts it in the SmartDashboard
     public void checkEncoder2()
     {
         boolean value = encoderInput2.get();
         SmartDashboardLogger.putBoolean(ENCODER_2_KEY, value);
     }
 
-    //    //Checks the status of the boolean pressure sensor    
+    // Checks the direction of the pressure sensor and puts it in the SmartDashboard
     public void checkBooleanPressureSensor()
     {
         boolean value = pressureInputState.get();
         SmartDashboardLogger.putBoolean(BOOLEAN_PRESSURE_SENSOR, value);
     }
 
-    //    //Checks the status of the regular pressure sensor
+    // Checks the psi -> boolean value of the pressure sensor and puts it in the SmartDashboard
     public void checkPressureSensor()
     {
         boolean value = pressureInputPSI.get();
