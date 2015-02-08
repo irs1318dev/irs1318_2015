@@ -7,11 +7,21 @@ import org.usfirst.frc.team1318.robot.Common.IDriver;
 import org.usfirst.frc.team1318.robot.Common.PIDHandler;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorController implements IController
 {
     private final ElevatorComponent component;
     private final IDriver driver;
+
+    private enum ContainerMacroStates
+    {
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT;
+    }
+
+    private ContainerMacroStates containerMacroState;
+    private Timer timer;
+    private double continueTime;
 
     private double baseLevel;
     private double position;
@@ -28,6 +38,8 @@ public class ElevatorController implements IController
     {
         this.component = component;
         this.driver = driver;
+
+        containerMacroState = ContainerMacroStates.STATE_0;
 
         this.useVelocityPID = false;
         this.usePID = true;
@@ -92,12 +104,50 @@ public class ElevatorController implements IController
             this.encoderZeroOffset = HardwareConstants.ELEVATOR_MIN_HEIGHT - this.component.getEncoderDistance();
         }
 
+        //decide how much power to give the talon and set it to that power 
         double powerLevel = 0.0;
+
+        switch (containerMacroState)
+        {
+            case STATE_0:
+                if (component.getThroughBeamSensor())
+                {
+                    containerMacroState = ContainerMacroStates.STATE_1_LOWER;
+                }
+                break;
+            case STATE_1_LOWER:
+                if (!ignoreSensors)
+                {
+                    movingToBottom = true;
+                    containerMacroState = ContainerMacroStates.STATE_2_WAIT;
+                }
+                else
+                {
+                    containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+            case STATE_2_WAIT:
+                if (!movingToBottom)
+                {
+                    if (usePID)
+                    {
+                        if (useVelocityPID)
+                        {
+                            useVelocityPID = false;
+                            this.createPIDHandler();
+                        }
+                        this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
+                    }
+                    containerMacroState = ContainerMacroStates.STATE_0;
+                }
+                break;
+        }
 
         // checks whether it is in a mode to move down until the sensor is triggered 
         if (this.driver.getElevatorMoveToBottom())
         {
             this.movingToBottom = true;
+            containerMacroState = ContainerMacroStates.STATE_0;
         }
 
         if (this.movingToBottom)
@@ -144,7 +194,7 @@ public class ElevatorController implements IController
                 // if we are in non-PID mode, pressing neither the up nor down override buttons means we should stop applying power to the motor
                 powerLevel = 0.0;
             }
-
+            containerMacroState = ContainerMacroStates.STATE_0;
             this.movingToBottom = false;
         }
 
@@ -182,7 +232,7 @@ public class ElevatorController implements IController
             {
                 powerLevel = -TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
             }
-
+            containerMacroState = ContainerMacroStates.STATE_0;
             this.movingToBottom = false;
         }
         else if (this.driver.getElevatorUpButton())
@@ -203,7 +253,7 @@ public class ElevatorController implements IController
             {
                 powerLevel = TuningConstants.ELEVATOR_OVERRIDE_POWER_LEVEL;
             }
-
+            containerMacroState = ContainerMacroStates.STATE_0;
             this.movingToBottom = false;
         }
 
@@ -215,7 +265,7 @@ public class ElevatorController implements IController
                 this.useVelocityPID = true;
                 this.createPIDHandler();
             }
-
+            containerMacroState = ContainerMacroStates.STATE_0;
             powerLevel = this.calculateVelocityModePowerSetting(velocity);
         }
 
@@ -230,6 +280,7 @@ public class ElevatorController implements IController
                 this.usePID = false;
                 this.createPIDHandler();
             }
+            containerMacroState = ContainerMacroStates.STATE_0;
         }
 
         this.component.setMotorPowerLevel(powerLevel);
