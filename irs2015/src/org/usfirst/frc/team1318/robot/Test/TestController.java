@@ -23,19 +23,20 @@ public class TestController implements IController
     @Override
     public void update()
     {
-        double currentTime = this.timer.get();
-        boolean go = this.driver.getDriveTrainSimpleMode();
-        if (currentTime % 10 > 5)
-        {
-            this.component.setComponent(go, 0.2);
-        }
-        else
-        {
-            this.component.setComponent(go, -0.2);
-        }
-
-        this.component.getAnalogSensor();
-        this.component.getDigitalSensor();
+        //        double currentTime = this.timer.get();
+        //        boolean go = this.driver.getDriveTrainSimpleMode();
+        //        if (currentTime % 10 > 5)
+        //        {
+        //            this.component.setComponent(go, 0.2);
+        //        }
+        //        else
+        //        {
+        //            this.component.setComponent(go, -0.2);
+        //        }
+        //
+        //        this.component.getAnalogSensor();
+        //        this.component.getDigitalSensor();
+        component.getThroughBeamSensor();
     }
 
     @Override
