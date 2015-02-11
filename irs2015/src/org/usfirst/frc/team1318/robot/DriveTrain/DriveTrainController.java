@@ -187,6 +187,8 @@ public class DriveTrainController implements IController
         // read the encoder distance just in case we want it output in smart dashboard
         this.component.getLeftEncoderDistance();
         this.component.getRightEncoderDistance();
+        this.component.getLeftEncoderTicks();
+        this.component.getRightEncoderTicks();
 
         // get a value indicating that we should be in simple mode...
         boolean simpleDriveModeEnabled = this.driver.getDriveTrainSimpleMode();
@@ -370,6 +372,8 @@ public class DriveTrainController implements IController
         // read the encoder velocity just in case we want it output in smart dashboard
         this.component.getLeftEncoderVelocity();
         this.component.getRightEncoderVelocity();
+        this.component.getLeftEncoderTicks();
+        this.component.getRightEncoderTicks();
 
         double leftPower;
         double rightPower;
