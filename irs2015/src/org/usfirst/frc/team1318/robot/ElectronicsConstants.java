@@ -42,5 +42,5 @@ public class ElectronicsConstants
     public static final int TEST_ENCODER_CHANNEL_B = -1;
     public static final int TEST_DIGITAL_INPUT_CHANNEL = -1;
 
-    public static final int TEST_THROUHG_BEAM_SENSOR_PORT = -1;
+    public static final int TEST_THROUHG_BEAM_SENSOR_PORT = 0;
 }
