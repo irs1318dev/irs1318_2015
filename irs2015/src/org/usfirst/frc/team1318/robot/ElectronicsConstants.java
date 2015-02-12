@@ -27,4 +27,23 @@ public class ElectronicsConstants
 
     public static final double COMPRESSOR_MAX_PSI = 150.0;
     public static final double COMPRESSOR_MAX_VOLTAGE = 10.0;
+
+    public static final int THROGUH_BEAM_SENSOR_PORT = -1;
+
+    public static final int ULTRASONIC_SENSOR_PORT_1 = -1;
+    public static final int ULTRASONIC_SENSOR_PORT_2 = -1;
+
+    public static final int DIP_SWITCH_PORT_1 = -1;
+    public static final int DIP_SWITCH_PORT_2 = -1;
+    public static final int DIP_SWITCH_PORT_3 = -1;
+
+    public static final int ENCODER_PORT_1A = -1;
+    public static final int ENCODER_PORT_1B = -1;
+    public static final int ENCODER_PORT_2A = -1;
+    public static final int ENCODER_PORT_2B = -1;
+    public static final int ENCODER_PORT_3A = -1;
+    public static final int ENCODER_PORT_3B = -1;
+
+    public static final int PRESSURE_STATE_SENSOR_PORT = -1;
+    public static final int CURRENT_PRESSURE_SENSOR_PORT = -1;
 }
