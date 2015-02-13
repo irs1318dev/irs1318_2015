@@ -59,14 +59,14 @@ public class JoystickButtonConstants
 
     //================================================== Arm ==============================================================
 
-    public static final int ARM_MACRO_EXTEND_BUTTON = -1;
-    public static final int ARM_MACRO_RETRACT_BUTTON = -1;
-    public static final int ARM_EXTENDER_EXTEND_BUTTON = -1;
-    public static final int ARM_EXTENDER_RETRACT_BUTTON = -1;
-    public static final int ARM_TILT_EXTEND_BUTTON = -1;
-    public static final int ARM_TILT_RETRACT_BUTTON = -1;
-    public static final int ARM_TROMBONE_EXTEND_BUTTON = -1;
-    public static final int ARM_TROMBONE_RETRACT_BUTTON = -1;
+    public static final int ARM_MACRO_EXTEND_BUTTON = 5;
+    public static final int ARM_MACRO_RETRACT_BUTTON = 3;
+    public static final int ARM_EXTENDER_EXTEND_BUTTON = 7;
+    public static final int ARM_EXTENDER_RETRACT_BUTTON = 8;
+    public static final int ARM_TILT_EXTEND_BUTTON = 9;
+    public static final int ARM_TILT_RETRACT_BUTTON = 10;
+    public static final int ARM_TROMBONE_EXTEND_BUTTON = 11;
+    public static final int ARM_TROMBONE_RETRACT_BUTTON = 12;
 
     //================================================== Intake ==============================================================
 
