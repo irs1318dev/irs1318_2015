@@ -37,6 +37,8 @@ public class TestController implements IController
         //        this.component.getAnalogSensor();
         //        this.component.getDigitalSensor();
         component.getThroughBeamSensor();
+        component.getProximitySensor();
+        component.getProximitySensor2();
     }
 
     @Override
