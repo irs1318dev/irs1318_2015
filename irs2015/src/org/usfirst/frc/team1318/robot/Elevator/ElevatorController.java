@@ -50,6 +50,8 @@ public class ElevatorController implements IController
 
         this.ignoreSensors = false;
 
+        this.canStabilizerState = null;
+
         this.baseLevel = HardwareConstants.ELEVATOR_FLOOR_HEIGHT;
         this.position = this.component.getEncoderDistance();
         this.movingToBottom = false;  // move to bottom to calibrate the encoder offset on start

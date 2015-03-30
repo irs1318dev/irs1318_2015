@@ -139,12 +139,11 @@ public class IntakeController implements IController
     private final IntakeComponent intake;
     private IDriver driver;
     private double motorSpeed;
-    //    private boolean moveSame;
 
     // state variables
     // true = outward(motor)/extending(piston), false = inward/retracting
     private Boolean solenoidState;
-    //    private Boolean solenoidRightState;
+    private Boolean bootSolenoidState;
     private boolean prevHoldButton;
 
     private Integer jitterCount;
@@ -155,9 +154,8 @@ public class IntakeController implements IController
         this.driver = operator;
         this.motorSpeed = 0.0;
         this.solenoidState = null;
-        //        this.solenoidRightState = null;
+        this.bootSolenoidState = null;
         this.prevHoldButton = false;
-        //        this.moveSame = false;
 
         this.jitterCount = null;
     }
@@ -176,13 +174,11 @@ public class IntakeController implements IController
         {
             this.motorSpeed = TuningConstants.INTAKE_MOTOR_SPEED;
             this.jitterCount = null;
-            //            moveSame = false;
         }
         else if (this.driver.getIntakeBackwardButton())
         {
             this.motorSpeed = -TuningConstants.INTAKE_MOTOR_SPEED;
             this.jitterCount = null;
-            //            moveSame = false;
         }
         else if (this.driver.getIntakeJitterButton())
         {
@@ -209,13 +205,11 @@ public class IntakeController implements IController
         if (this.driver.getIntakeDownHoldButton())
         {
             this.solenoidState = false;
-            //            this.solenoidRightState = false;
             this.prevHoldButton = true;
         }
         else if (prevHoldButton)
         {
             this.solenoidState = true;
-            //            this.solenoidRightState = true;
             this.prevHoldButton = false;
         }
 
@@ -224,52 +218,33 @@ public class IntakeController implements IController
         if (this.driver.getIntakeUpButton())
         {
             this.solenoidState = false;
-            //            this.solenoidRightState = false;
         }
 
         if (this.driver.getIntakeDownButton())
         {
             this.solenoidState = true;
-            //            this.solenoidRightState = true;
         }
 
-        //        if (this.operator.getIntakeLeftExtendOverride())
-        //        {
-        //            this.solenoidState = true;
-        //        }
-        //
-        //        if (this.operator.getIntakeLeftRetractOverride())
-        //        {
-        //            this.solenoidState = false;
-        //        }
-        //
-        //        if (this.operator.getIntakeRightExtendOverride())
-        //        {
-        //            this.solenoidRightState = true;
-        //        }
-        //
-        //        if (this.operator.getIntakeRightRetractOverride())
-        //        {
-        //            this.solenoidRightState = false;
-        //        }
+        if (this.driver.getIntakeBootExtendButton())
+        {
+            this.bootSolenoidState = true;
+        }
+        else if (this.driver.getIntakeBootRetractButton())
+        {
+            this.bootSolenoidState = false;
+        }
+
+        if (this.bootSolenoidState != null)
+        {
+            this.intake.setBootSolenoid(this.bootSolenoidState);
+        }
 
         // sets IntakeComponent using solenoid and motor states
         if (this.solenoidState != null)
         {
-            this.intake.setLeftIntake(this.solenoidState);
+            this.intake.setIntakeSolenoid(this.solenoidState);
         }
-        //        if (this.solenoidRightState != null)
-        //        {
-        //            this.intake.setRightIntake(this.solenoidRightState);
-        //        }
-        //        if (moveSame)
-        //        {
-        //            this.intake.setIntakeMotorSameSpeed(this.motorSpeed);
-        //        }
-        //        else
-        //        {
         this.intake.setIntakeMotorSpeed(this.motorSpeed);
-        //        }
     }
 
     public void stop()

@@ -575,4 +575,18 @@ public class AutonomousDriver implements IDriver
         //        SmartDashboardLogger.putBoolean(AutonomousDriver.INTAKE_BACKWARD_STATE_KEY, state);
         return state;
     }
+
+    @Override
+    public boolean getIntakeBootExtendButton()
+    {
+        //TODO: implement 
+        return false;
+    }
+
+    @Override
+    public boolean getIntakeBootRetractButton()
+    {
+        //TODO: implement 
+        return false;
+    }
 }

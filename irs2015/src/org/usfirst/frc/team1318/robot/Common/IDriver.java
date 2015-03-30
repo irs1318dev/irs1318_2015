@@ -293,4 +293,8 @@ public interface IDriver
     public boolean getIntakeBackwardButton();
 
     public boolean getIntakeJitterButton();
+
+    public boolean getIntakeBootExtendButton();
+
+    public boolean getIntakeBootRetractButton();
 }

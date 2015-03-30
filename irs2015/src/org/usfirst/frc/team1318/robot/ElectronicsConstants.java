@@ -54,6 +54,9 @@ public class ElectronicsConstants
     public static final int INTAKE_LEFT_ARM_CHANNEL_A = 0;
     public static final int INTAKE_LEFT_ARM_CHANNEL_B = 7;
 
+    public static final int INTAKE_BOOT_EXTEND_CHANNEL = -1;
+    public static final int INTAKE_BOOT_RETRACT_CHANNEL = -1;
+
     //    public static final int INTAKE_RIGHT_ARM_CHANNEL_A = 7;
     //    public static final int INTAKE_RIGHT_ARM_CHANNEL_B = 0;
 

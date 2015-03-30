@@ -78,8 +78,8 @@ public class UserDriver implements IDriver
     //Arm
     private SimpleButton armMacroExtendButton;
     private SimpleButton armMacroRetractButton;
-    private SimpleButton armExtenderExtendOverride;
-    private SimpleButton armExtenderRetractOverride;
+    //    private SimpleButton armExtenderExtendOverride;
+    //    private SimpleButton armExtenderRetractOverride;
     private SimpleButton armTiltExtendOverride;
     private SimpleButton armTiltRetractOverride;
     private SimpleButton armTromboneExtendOverride;
@@ -92,6 +92,8 @@ public class UserDriver implements IDriver
     private SimpleButton intakeRightRetractOverride;
     private SimpleButton intakeLeftExtendOverride;
     private SimpleButton intakeLeftRetractOverride;
+    private SimpleButton intakeBootExtendButton;
+    private SimpleButton intakeBootRetractButton;
 
     //Elevator 
     private SimpleButton elevatorContainerMacroButton;
@@ -130,8 +132,8 @@ public class UserDriver implements IDriver
         //Arm
         this.armMacroExtendButton = new SimpleButton();
         this.armMacroRetractButton = new SimpleButton();
-        this.armExtenderExtendOverride = new SimpleButton();
-        this.armExtenderRetractOverride = new SimpleButton();
+        //        this.armExtenderExtendOverride = new SimpleButton();
+        //        this.armExtenderRetractOverride = new SimpleButton();
         this.armTiltExtendOverride = new SimpleButton();
         this.armTiltRetractOverride = new SimpleButton();
         this.armTromboneExtendOverride = new SimpleButton();
@@ -144,6 +146,8 @@ public class UserDriver implements IDriver
         this.intakeRightRetractOverride = new SimpleButton();
         this.intakeLeftExtendOverride = new SimpleButton();
         this.intakeLeftRetractOverride = new SimpleButton();
+        this.intakeBootExtendButton = new SimpleButton();
+        this.intakeBootRetractButton = new SimpleButton();
 
         //Elevator
         this.elevatorContainerMacroButton = new SimpleButton();
@@ -182,9 +186,9 @@ public class UserDriver implements IDriver
         //Arm 
         this.armMacroExtendButton.updateState(this.joystickDriver.getPOV() == 0);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_EXTEND_BUTTON));
         this.armMacroRetractButton.updateState(this.joystickDriver.getPOV() == 180);//this.joystickDriver.getRawButton(JoystickButtonConstants.ARM_MACRO_RETRACT_BUTTON));
-        this.armExtenderExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
-        this.armExtenderRetractOverride
-            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
+        //        this.armExtenderExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_EXTEND_BUTTON));
+        //        this.armExtenderRetractOverride
+        //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_EXTENDER_RETRACT_BUTTON));
         this.armTiltExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_EXTEND_BUTTON));
         this.armTiltRetractOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TILT_RETRACT_BUTTON));
         this.armTromboneExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.ARM_TROMBONE_EXTEND_BUTTON));
@@ -201,6 +205,8 @@ public class UserDriver implements IDriver
         //        this.intakeLeftExtendOverride.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_EXTEND_OVERRIDE));
         //        this.intakeLeftRetractOverride
         //            .updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_LEFT_RETRACT_OVERRIDE));
+        this.intakeBootExtendButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_BOOT_EXTEND_BUTTON));
+        this.intakeBootRetractButton.updateState(this.joystickCoDriver.getRawButton(JoystickButtonConstants.INTAKE_BOOT_RETRACT_BUTTON));
 
         //Elevator
         //        this.elevatorContainerMacroButton.updateState(this.joystickDriver
@@ -538,17 +544,19 @@ public class UserDriver implements IDriver
     @Override
     public boolean getArmExtenderExtendOverride()
     {
-        boolean mode = this.armExtenderExtendOverride.isActivated();
+        //        boolean mode = this.armExtenderExtendOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_EXTEND_OVERRIDE_LOG_KEY, mode);
-        return mode;
+        //        return mode;
+        return false;
     }
 
     @Override
     public boolean getArmExtenderRetractOverride()
     {
-        boolean mode = this.armExtenderRetractOverride.isActivated();
+        //        boolean mode = this.armExtenderRetractOverride.isActivated();
         //        SmartDashboardLogger.putBoolean(UserDriver.ARM_EXTENDER_RETRACT_OVERRIDE_LOG_KEY, mode);
-        return mode;
+        //        return mode;
+        return false;
     }
 
     /**
@@ -677,5 +685,19 @@ public class UserDriver implements IDriver
     {
         //        return this.joystickDriver.getRawButton(JoystickButtonConstants.INTAKE_JITTER_BUTTON);
         return false;
+    }
+
+    @Override
+    public boolean getIntakeBootExtendButton()
+    {
+        boolean mode = this.intakeBootExtendButton.isActivated();
+        return mode;
+    }
+
+    @Override
+    public boolean getIntakeBootRetractButton()
+    {
+        boolean mode = this.intakeBootRetractButton.isActivated();
+        return mode;
     }
 }

@@ -89,4 +89,6 @@ public class JoystickButtonConstants
     public static final int INTAKE_FORWARD_BUTTON = 3;
     public static final int INTAKE_BACKWARD_BUTTON = 5;
     //    public static final int INTAKE_JITTER_BUTTON = 8;
+    public static final int INTAKE_BOOT_EXTEND_BUTTON = 2;
+    public static final int INTAKE_BOOT_RETRACT_BUTTON = 7;
 }
