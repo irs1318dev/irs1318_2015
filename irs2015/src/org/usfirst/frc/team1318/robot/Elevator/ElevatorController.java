@@ -18,10 +18,11 @@ public class ElevatorController implements IController
 
     private enum ContainerMacroStates
     {
-        STATE_0, STATE_1_LOWER, STATE_2_WAIT, STATE_3_ALTERNATE_WAIT;
+        STATE_0, STATE_1_LOWER, STATE_2_WAIT, STATE_3_ALTERNATE_WAIT, STATE_4_BOTTOM_WAIT, STATE_5_UP;
     }
 
     private ContainerMacroStates containerMacroState;
+    private final double MACRO_WAIT_TIME = 0.1;
 
     private double baseLevel;
     private double position;
@@ -32,6 +33,7 @@ public class ElevatorController implements IController
     private PIDHandler pidHandler;
 
     private double lastTime;
+    private double macroTime;
     private final Timer timer;
 
     private boolean movingToBottom;
@@ -57,6 +59,7 @@ public class ElevatorController implements IController
         this.timer = new Timer();
         this.timer.start();
         this.lastTime = this.timer.get();
+        this.macroTime = this.timer.get();
         this.containerMacroState = ContainerMacroStates.STATE_0;
 
         this.elevatorSlowMode = false;
@@ -207,15 +210,24 @@ public class ElevatorController implements IController
                 }
                 if (!this.movingToBottom)
                 {
-                    if (this.usePID)
-                    {
-                        this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
-                    }
-                    this.containerMacroState = ContainerMacroStates.STATE_0;
+                    //                    if (this.usePID)
+                    //                    {
+                    //                        this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
+                    //                    }
+                    this.containerMacroState = ContainerMacroStates.STATE_4_BOTTOM_WAIT;
+                    this.macroTime = this.timer.get();
                 }
                 break;
             case STATE_3_ALTERNATE_WAIT:
                 if (this.component.getEncoderDistance() - this.component.getEncoderZeroOffset() < 1)
+                {
+                    //                    this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
+                    this.containerMacroState = ContainerMacroStates.STATE_4_BOTTOM_WAIT;
+                    this.macroTime = this.timer.get();
+                }
+                break;
+            case STATE_4_BOTTOM_WAIT:
+                if (this.timer.get() > this.macroTime + this.MACRO_WAIT_TIME)
                 {
                     this.position = HardwareConstants.ELEVATOR_1_TOTE_HEIGHT;
                     this.containerMacroState = ContainerMacroStates.STATE_0;
